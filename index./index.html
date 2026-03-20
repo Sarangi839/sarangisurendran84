@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sarangi Surendran · Technical Writer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Sora', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #1a1d2e;
+  background: #f6f7fb;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── DESIGN TOKENS ────────────────────────────────────────── */
+:root {
+  --navy:    #1a1d2e;
+  --ink:     #2c3048;
+  --mid:     #535a7a;
+  --muted:   #8990b0;
+  --line:    #dde2f2;
+  --surface: #ffffff;
+  --bg:      #f6f7fb;
+  --blue:    #1e4fd8;
+  --blue-l:  #eef2fc;
+  --green:   #0d7a5f;
+  --green-l: #e4f4ef;
+  --amber:   #a96b0c;
+  --amber-l: #fdf2e0;
+  --r:       10px;
+  --max:     1060px;
+  --mono:    'JetBrains Mono', monospace;
+}
+
+/* ── NAV ──────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1.4rem, 5vw, 2.8rem);
+  background: rgba(246,247,251,0.93);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-name {
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--navy); letter-spacing: 0.01em;
+}
+.nav-links { display: flex; gap: 1.8rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 500;
+  color: var(--mid); text-decoration: none;
+  letter-spacing: 0.03em; transition: color 0.18s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0;
+  width: 0; height: 1.5px; background: var(--blue);
+  transition: width 0.2s;
+}
+.nav-links a:hover { color: var(--blue); }
+.nav-links a:hover::after, .nav-links a.on::after { width: 100%; }
+.nav-links a.on { color: var(--blue); }
+
+/* ── LAYOUT ───────────────────────────────────────────────── */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.4rem,5vw,2.8rem); }
+section { padding: 80px 0; }
+.on-white { background: var(--surface); }
+.sep { border: none; border-top: 1px solid var(--line); margin: 0; }
+
+/* ── FADE IN ──────────────────────────────────────────────── */
+.fi { opacity: 0; transform: translateY(18px); transition: opacity .48s ease, transform .48s ease; }
+.fi.v { opacity: 1; transform: none; }
+
+/* ── SECTION LABEL ────────────────────────────────────────── */
+.label {
+  font-family: var(--mono);
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--blue); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.s-title {
+  font-size: clamp(1.6rem, 2.8vw, 2rem);
+  font-weight: 700; color: var(--navy);
+  letter-spacing: -0.02em; line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+.s-sub {
+  font-size: 0.92rem; color: var(--mid);
+  max-width: 520px; line-height: 1.7;
+}
+.s-head { margin-bottom: 44px; }
+
+/* ── BUTTONS ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.62rem 1.3rem; border-radius: 8px;
+  font-family: inherit; font-size: 0.82rem; font-weight: 600;
+  text-decoration: none; border: 1.5px solid transparent;
+  transition: all 0.18s; cursor: pointer;
+}
+.btn-p { background: var(--blue); color: #fff; border-color: var(--blue); }
+.btn-p:hover { background: #1840b8; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(30,79,216,.22); }
+.btn-o { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-o:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+/* ── HERO ─────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding-top: 56px; overflow: hidden; position: relative;
+}
+.hero-glow {
+  position: absolute; right: -10%; top: 20%;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,79,216,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4.5rem; align-items: center; width: 100%;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--mono); font-size: 0.68rem;
+  color: var(--blue); letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--blue-l); border: 1px solid #c4d2f6;
+  padding: 0.26rem 0.75rem; border-radius: 20px;
+  margin-bottom: 1.2rem;
+}
+.hero-name {
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  font-weight: 700; color: var(--navy);
+  letter-spacing: -0.03em; line-height: 1.08;
+  margin-bottom: 0.5rem;
+}
+.hero-name span { color: var(--blue); }
+.hero-role {
+  font-size: 1rem; font-weight: 500; color: var(--mid);
+  margin-bottom: 1.1rem; letter-spacing: 0.005em;
+}
+.hero-desc {
+  font-size: 0.93rem; color: var(--mid);
+  line-height: 1.75; max-width: 440px; margin-bottom: 1.8rem;
+}
+.hero-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.25rem 1.3rem;
+  transition: box-shadow .2s, transform .2s;
+}
+.stat-card:hover { box-shadow: 0 7px 22px rgba(0,0,0,.07); transform: translateY(-2px); }
+.stat-n {
+  font-size: 2rem; font-weight: 700;
+  color: var(--blue); line-height: 1; margin-bottom: 0.25rem;
+}
+.stat-card.g .stat-n { color: var(--green); }
+.stat-card.a .stat-n { color: var(--amber); }
+.stat-l { font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+
+/* ── ABOUT ────────────────────────────────────────────────── */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: start; }
+.about-body p { font-size: 0.91rem; color: var(--mid); line-height: 1.82; margin-bottom: 0.9rem; }
+.about-body p strong { color: var(--ink); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.3rem; }
+.chip {
+  font-size: 0.73rem; font-weight: 500;
+  padding: 0.24rem 0.72rem; border-radius: 20px;
+  background: var(--blue-l); color: var(--blue); border: 1px solid #c4d2f6;
+}
+.chip.g { background: var(--green-l); color: var(--green); border-color: #a5d9ce; }
+.chip.a { background: var(--amber-l); color: var(--amber); border-color: #e5c07a; }
+
+.pillars { display: flex; flex-direction: column; gap: 0.85rem; }
+.pillar {
+  display: flex; align-items: flex-start; gap: 0.9rem;
+  padding: 1rem 1.15rem;
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: var(--r); transition: border-color .18s, box-shadow .18s;
+}
+.pillar:hover { border-color: var(--blue); box-shadow: 0 3px 12px rgba(30,79,216,.07); }
+.pillar-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+.pillar h4 { font-size: 0.84rem; font-weight: 600; color: var(--navy); margin-bottom: 0.18rem; }
+.pillar p { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
+
+/* ── SKILLS ───────────────────────────────────────────────── */
+.skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+.skill-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.4rem 1.4rem;
+  transition: box-shadow .22s, transform .22s, border-color .22s;
+}
+.skill-card:hover { box-shadow: 0 9px 28px rgba(0,0,0,.07); transform: translateY(-3px); border-color: var(--blue); }
+.sk-icon { font-size: 1.3rem; margin-bottom: 0.65rem; }
+.sk-title { font-size: 0.75rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
+.sk-list { list-style: none; display: flex; flex-direction: column; gap: 0.33rem; }
+.sk-list li { font-size: 0.79rem; color: var(--mid); padding-left: 0.9rem; position: relative; }
+.sk-list li::before { content: '·'; position: absolute; left: 0; color: var(--blue); font-size: 1rem; line-height: 1.4; }
+
+/* ── EXPERIENCE ───────────────────────────────────────────── */
+.exp-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.8rem 2rem; margin-bottom: 1.2rem;
+}
+.co-head { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+.co-logo {
+  width: 44px; height: 44px; border-radius: 9px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.88rem; font-weight: 700; color: #fff;
+}
+.co-logo.blue { background: var(--blue); box-shadow: 0 3px 10px rgba(30,79,216,.2); }
+.co-logo.grey { background: var(--mid); }
+.co-info h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.1rem; }
+.co-info p { font-size: 0.77rem; color: var(--muted); }
+
+.promo {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--amber-l); border: 1.5px solid #e5c07a;
+  border-radius: 20px; padding: 0.35rem 0.9rem;
+  font-size: 0.74rem; font-weight: 700; color: var(--amber);
+  margin-bottom: 1.2rem;
+}
+.pods { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.2rem; }
+.pod {
+  font-family: var(--mono); font-size: 0.67rem;
+  background: var(--blue-l); color: var(--blue);
+  border: 1px solid #c4d2f6; padding: 0.16rem 0.52rem; border-radius: 4px;
+}
+
+/* Role block */
+.role-block { margin-bottom: 1.2rem; }
+.role-block:last-of-type { margin-bottom: 0; }
+.role-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.25rem;
+}
+.role-title { font-size: 0.88rem; font-weight: 700; color: var(--ink); }
+.role-date { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+.role-div { border: none; border-top: 1px solid var(--line); margin: 1.1rem 0; }
+
+/* Bullets */
+.bul { list-style: none; display: flex; flex-direction: column; gap: 0.48rem; }
+.bul li { font-size: 0.845rem; color: var(--mid); line-height: 1.65; padding-left: 1.1rem; position: relative; }
+.bul li::before { content: '→'; position: absolute; left: 0; color: var(--blue); font-size: 0.68rem; top: 0.3rem; }
+.bul li strong { color: var(--ink); font-weight: 600; }
+
+/* ── PROJECTS ─────────────────────────────────────────────── */
+.proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.1rem; }
+.proj-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--blue); border-radius: var(--r);
+  padding: 1.2rem 1.3rem;
+  transition: box-shadow .2s, transform .2s;
+}
+.proj-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.07); transform: translateY(-2px); }
+.proj-badge {
+  font-family: var(--mono); font-size: 0.65rem;
+  background: var(--blue-l); color: var(--blue);
+  padding: 0.14rem 0.48rem; border-radius: 3px;
+  display: inline-block; margin-bottom: 0.4rem;
+}
+.proj-card h4 { font-size: 0.85rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+.proj-card p { font-size: 0.78rem; color: var(--mid); line-height: 1.55; }
+.proj-outcome { font-size: 0.72rem; color: var(--green); font-weight: 600; margin-top: 0.5rem; }
+
+/* ── WORK SAMPLES ─────────────────────────────────────────── */
+.work-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+.work-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.2rem 1.2rem 1rem;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; gap: 0.45rem;
+  transition: border-color .18s, box-shadow .18s, transform .18s;
+}
+.work-card:hover { border-color: var(--blue); box-shadow: 0 5px 16px rgba(30,79,216,.08); transform: translateY(-2px); }
+.wc-icon { font-size: 1.2rem; }
+.wc-title { font-size: 0.82rem; font-weight: 700; color: var(--navy); }
+.wc-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.5; flex: 1; }
+.wc-link { font-size: 0.72rem; color: var(--blue); font-weight: 600; }
+
+/* ── IMPACT ───────────────────────────────────────────────── */
+.impact-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+.impact-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.4rem 1rem; text-align: center;
+}
+.im-n { font-size: 1.8rem; font-weight: 700; color: var(--blue); line-height: 1; margin-bottom: 0.28rem; }
+.im-l { font-size: 0.74rem; color: var(--muted); line-height: 1.4; }
+
+/* ── RECOGNITION ──────────────────────────────────────────── */
+.rec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.95rem; }
+.rec-card {
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.1rem 1.2rem;
+  transition: box-shadow .18s, transform .18s;
+}
+.rec-card:hover { box-shadow: 0 5px 16px rgba(0,0,0,.06); transform: translateY(-2px); }
+.rec-icon { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.rec-card h4 { font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 0.28rem; }
+.rec-card p { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
+/* ── CONTACT ──────────────────────────────────────────────── */
+.contact-inner { max-width: 480px; margin: 0 auto; text-align: center; }
+.contact-inner p { font-size: 0.92rem; color: var(--mid); line-height: 1.75; margin-bottom: 1.8rem; }
+.contact-btns { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+footer { border-top: 1px solid var(--line); padding: 1.3rem clamp(1.4rem,5vw,2.8rem); text-align: center; font-size: 0.75rem; color: var(--muted); }
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero-grid, .about-grid { grid-template-columns: 1fr; }
+  .hero-glow { display: none; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .skills-grid { grid-template-columns: repeat(2,1fr); }
+  .work-grid { grid-template-columns: repeat(2,1fr); }
+  .rec-grid { grid-template-columns: repeat(2,1fr); }
+  .impact-grid { grid-template-columns: repeat(2,1fr); }
+  .proj-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .skills-grid, .rec-grid { grid-template-columns: 1fr; }
+  .work-grid { grid-template-columns: 1fr 1fr; }
+  .impact-grid { grid-template-columns: 1fr 1fr; }
+  section { padding: 60px 0; }
+  .nav-links { gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-name">Sarangi Surendran</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#recognition">Recognition</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="fi">
+        <div class="hero-badge">✦ Information Developer II · Whatfix</div>
+        <h1 class="hero-name">Sarangi<br/><span>Surendran</span></h1>
+        <p class="hero-role">Technical Writer · DAP Specialist · Documentation Automation</p>
+        <p class="hero-desc">I create structured, user-centered documentation and in-app guidance for SaaS products — and build the automations that keep it accurate, current, and measurable at scale.</p>
+        <div class="hero-btns">
+          <a href="#" class="btn btn-p" download>↓ Resume</a>
+          <a href="https://www.linkedin.com/in/sarangisurendran4" class="btn btn-o" target="_blank">LinkedIn ↗</a>
+          <a href="#work" class="btn btn-o">Work Samples</a>
+        </div>
+      </div>
+      <div class="stats fi" style="transition-delay:.12s">
+        <div class="stat-card">
+          <div class="stat-n">7+</div>
+          <div class="stat-l">Product pods owned across Whatfix platform</div>
+        </div>
+        <div class="stat-card g">
+          <div class="stat-n">8+</div>
+          <div class="stat-l">Automation scripts — no more manual audits</div>
+        </div>
+        <div class="stat-card a">
+          <div class="stat-n">570+</div>
+          <div class="stat-l">Support articles reviewed in English & German</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">35+</div>
+          <div class="stat-l">Customer-facing videos + 10+ PM demo videos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- ABOUT -->
+<section id="about" class="on-white">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="fi">
+        <div class="label">About</div>
+        <h2 class="s-title">Writing with purpose.<br/>Building with intent.</h2>
+        <div class="about-body">
+          <p>I'm an Information Developer II at <strong>Whatfix</strong>, a SaaS Digital Adoption Platform. In 2.8 years I've been promoted twice — from intern to ID II — by treating documentation not as a deliverable but as a <strong>product lever</strong>.</p>
+          <p>My work starts with data: CallAI calls, support tickets, product analytics. I write only after I understand where users struggle. I also build automation pipelines so the team spends time on insight, not manual checks.</p>
+          <p>I've presented at external technical writer events, mentored interns, and collaborated across PMs, engineers, UX writers, CSMs, and enterprise customers — earning consistent recognition for dependability and cross-functional impact.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">Technical Writing</span>
+          <span class="chip">DAP Strategy</span>
+          <span class="chip g">Automation</span>
+          <span class="chip g">Analytics</span>
+          <span class="chip a">Video Production</span>
+          <span class="chip a">UX Writing</span>
+          <span class="chip">Release Management</span>
+          <span class="chip g">Gen AI Integration</span>
+          <span class="chip">Community Content</span>
+        </div>
+      </div>
+      <div class="pillars fi" style="transition-delay:.09s">
+        <div class="pillar">
+          <div class="pillar-icon">📐</div>
+          <div>
+            <h4>Documentation as a System</h4>
+            <p>Cross-linked guides, FAQs, troubleshooting, and DAP interventions designed to work as a connected ecosystem, not isolated pages.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">⚙️</div>
+          <div>
+            <h4>Automation-First</h4>
+            <p>Broken-link crawlers, article-age trackers, Jira reporters — I automate every repeatable audit so the team focuses on strategy.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">🔬</div>
+          <div>
+            <h4>Research Before Writing</h4>
+            <p>I analyze CallAI calls, Zendesk tickets, and run usability tests before writing. Every document reflects verified user needs.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">📈</div>
+          <div>
+            <h4>Content Tied to Adoption</h4>
+            <p>I track DAP analytics, share insights with PMs, and iterate — documentation as a measurable driver of feature adoption.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="s-head fi">
+      <div class="label">Skills & Tools</div>
+      <h2 class="s-title">Full-stack documentation toolkit</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card fi">
+        <div class="sk-icon">✍️</div>
+        <div class="sk-title">Documentation</div>
+        <ul class="sk-list">
+          <li>User guides & feature walkthroughs</li>
+          <li>Release notes & changelogs</li>
+          <li>FAQs & troubleshooting guides</li>
+          <li>In-app DAP content (Flows, Tips, Launchers)</li>
+          <li>Confluence & internal KB articles</li>
+          <li>UX writing & microcopy</li>
+          <li>Accessibility (WCAG, alt text)</li>
+          <li>German localization review</li>
+        </ul>
+      </div>
+      <div class="skill-card fi" style="transition-delay:.06s">
+        <div class="sk-icon">🛠️</div>
+        <div class="sk-title">Tools & Platforms</div>
+        <ul class="sk-list">
+          <li>Document360, Confluence, Markdown</li>
+          <li>Jira & Jira API</li>
+          <li>Whatfix (Studio, Guidance, App/WF Engine)</li>
+          <li>Camtasia, Snagit, Synthesia</li>
+          <li>Canva, Figma, Draw.io</li>
+          <li>Python, Google Apps Script, VS Code</li>
+          <li>Selenium, HTML/CSS</li>
+          <li>CallAI / Chorus, Zendesk, Whatfix Analytics</li>
+        </ul>
+      </div>
+      <div class="skill-card fi" style="transition-delay:.12s">
+        <div class="sk-icon">🤝</div>
+        <div class="sk-title">Strategy & Process</div>
+        <ul class="sk-list">
+          <li>Cross-pod release management</li>
+          <li>Analytics-driven content decisions</li>
+          <li>Usability testing & DAC research</li>
+          <li>Product insight & feedback loops</li>
+          <li>Style guide governance</li>
+          <li>Gen AI (Gemini, Synthesia AI)</li>
+          <li>Intern mentorship & KT sessions</li>
+          <li>PM / Engineer / UX collaboration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="on-white">
+  <div class="wrap">
+    <div class="s-head fi">
+      <div class="label">Experience</div>
+      <h2 class="s-title">2.8 years. 7 pods.<br/>Promoted twice.</h2>
+    </div>
+
+    <!-- Whatfix -->
+    <div class="exp-card fi">
+      <div class="co-head">
+        <div class="co-logo blue">Wx</div>
+        <div class="co-info">
+          <h3>Whatfix</h3>
+          <p>SaaS Digital Adoption Platform · Bangalore, India · Jul 2023 – Present</p>
+        </div>
+      </div>
+      <div class="promo">▲ Promoted twice in 2 years · Intern → Information Developer I → Information Developer II</div>
+      <div class="pods">
+        <span class="pod">Studio</span><span class="pod">Guidance</span><span class="pod">App Engine</span>
+        <span class="pod">Workflow Engine</span><span class="pod">Hub & CD</span><span class="pod">Seek</span><span class="pod">Labs Assistant</span>
+      </div>
+
+      <!-- ID II -->
+      <div class="role-block">
+        <div class="role-head">
+          <span class="role-title">Information Developer II</span>
+          <span class="role-date">Mar 2025 – Present</span>
+        </div>
+        <ul class="bul">
+          <li>Owned Workflow Engine & Seek documentation — release notes, user guides, DAP content, and demo videos delivered days ahead of release; <strong>zero escalations</strong>.</li>
+          <li>Ran usability testing with Digital Adoption Consultants; built a Whatfix Launcher on support site linking to community use cases — <strong>increased community traffic and feature engagement</strong>.</li>
+          <li>Surfaced historical QuickRead analytics same-day via auto-capture, <strong>closing a PM's Q1 OKR</strong> and saving a full month of data-collection wait.</li>
+          <li>Delivered iCertis enterprise DAP content ahead of deadline; produced Seek/Dreamforce GTM videos <strong>amplified on LinkedIn by company leadership</strong>.</li>
+          <li>Presented <em>"Writer-Led Innovation for Tool Limitations"</em> at an external technical writers' event; appreciated by senior writers industry-wide.</li>
+        </ul>
+      </div>
+
+      <hr class="role-div"/>
+
+      <!-- ID I -->
+      <div class="role-block">
+        <div class="role-head">
+          <span class="role-title">Information Developer I</span>
+          <span class="role-date">Jan 2024 – Mar 2025</span>
+        </div>
+        <ul class="bul">
+          <li>Owned Studio, App Engine & Workflow Engine pods — authored user guides, release notes, FAQs, troubleshooting, and DAP content for <strong>20+ releases</strong>.</li>
+          <li>Engineered <strong>8+ automation scripts</strong> (Python, GAS, Jira API, Selenium): broken-link crawler, article-age tracker with auto-assignment, WSC ticket reporter, duplicate-file highlighter, and release-reminder emailer.</li>
+          <li>Peer-reviewed <strong>570+ support articles</strong> (EN + DE); maintained WSC ticket turnaround <strong>under 4 days</strong>; resolved 50%+ tickets proactively.</li>
+          <li>Identified UX inconsistencies across 7 pods; co-developed updated UX writing guidelines with UX writer — improved <strong>product-wide terminology consistency</strong>.</li>
+          <li>Authored <strong>38+ community posts</strong> grounded in CallAI analysis & Zendesk data; mentored <strong>2 interns</strong> with training plans and KT sessions.</li>
+        </ul>
+      </div>
+
+      <hr class="role-div"/>
+
+      <!-- Intern -->
+      <div class="role-block">
+        <div class="role-head">
+          <span class="role-title">Information Developer Intern</span>
+          <span class="role-date">Jul 2023 – Jan 2024</span>
+        </div>
+        <ul class="bul">
+          <li>Took solo ownership of Studio pod documentation — created FAQs, troubleshooting articles, onboarding videos, and community posts; became <strong>self-sufficient in resolving Studio issues</strong>.</li>
+          <li>Early-access tester for Visual Editor, Icon Library, and Survey features — bug reports and feedback <strong>incorporated into shipped product</strong>.</li>
+          <li>Scored <strong>95%</strong> on Whatfix product knowledge quiz; completed 7+ LinkedIn Learning courses with assessments.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- QSpiders -->
+    <div class="exp-card fi">
+      <div class="co-head">
+        <div class="co-logo grey">Qs</div>
+        <div class="co-info">
+          <h3>QSpiders Campus Connect</h3>
+          <p>Software Engineer Trainee (Internship) · Bangalore · Sep 2022 – Feb 2023</p>
+        </div>
+      </div>
+      <ul class="bul">
+        <li>Built web pages using HTML5, CSS3, and JavaScript; trained on Java and SQL in a structured software engineering programme.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="s-head fi">
+      <div class="label">Notable Projects</div>
+      <h2 class="s-title">Automation & initiatives<br/>that moved the needle</h2>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card fi">
+        <div class="proj-badge">Python + GAS + Jira API</div>
+        <h4>Documentation Health Automation Suite</h4>
+        <p>Built 8+ scripts — broken-link crawler (Selenium), article-age tracker with auto-assignment, WSC ticket reporter, duplicate-file highlighter, release-reminder emailer, and SUCC ticket fetcher. Replaced all recurring manual content-ops audits.</p>
+        <div class="proj-outcome">↑ Eliminated weekly manual audits across the team</div>
+      </div>
+      <div class="proj-card fi" style="transition-delay:.06s">
+        <div class="proj-badge">Usability Research + DAP</div>
+        <h4>Feature Adoption via Community + DAP Launcher</h4>
+        <p>Ran usability tests with Digital Adoption Consultants to diagnose low adoption of a newly released feature. Identified a gap between support docs and real-world use cases. Built a Whatfix Launcher on the support site directly linking users to relevant community posts.</p>
+        <div class="proj-outcome">↑ Community traffic and feature engagement increased post-deployment</div>
+      </div>
+      <div class="proj-card fi" style="transition-delay:.03s">
+        <div class="proj-badge">Synthesia + Loom</div>
+        <h4>Video Workflow Optimisation Hack</h4>
+        <p>Devised a Synthesia + Loom audio-sync workflow to bypass the platform's monthly minute limits. Allowed teams to sync audio with video from the very first draft, eliminating back-and-forth iterations and reducing production costs.</p>
+        <div class="proj-outcome">↑ Reduced rework and cut video production costs team-wide</div>
+      </div>
+      <div class="proj-card fi" style="transition-delay:.09s">
+        <div class="proj-badge">Whatfix Analytics</div>
+        <h4>Same-Day OKR Analytics Delivery</h4>
+        <p>When a PM needed historical QuickRead engagement data for a Q1 OKR, leveraged Whatfix's auto-capture capability to surface the click-stream data same-day — rather than waiting a full month for instrumented collection to run.</p>
+        <div class="proj-outcome">↑ PM's Q1 OKR closed on schedule</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- WORK SAMPLES -->
+<section id="work" class="on-white">
+  <div class="wrap">
+    <div class="s-head fi">
+      <div class="label">Work Samples</div>
+      <h2 class="s-title">Documentation, videos<br/>& community content</h2>
+      <p class="s-sub">Replace placeholder links below with real URLs when ready to publish.</p>
+    </div>
+    <div class="work-grid fi">
+      <a href="#" class="work-card">
+        <div class="wc-icon">📄</div>
+        <div class="wc-title">Support Articles</div>
+        <div class="wc-desc">User guides, troubleshooting docs, FAQs — published on Document360 for Studio, AVR, Diagnostics, Seek, and more.</div>
+        <div class="wc-link">View articles ↗</div>
+      </a>
+      <a href="#" class="work-card">
+        <div class="wc-icon">🌐</div>
+        <div class="wc-title">Community Posts</div>
+        <div class="wc-desc">38+ real-world use-case posts on the Whatfix Community — grounded in customer calls and Zendesk data.</div>
+        <div class="wc-link">Browse posts ↗</div>
+      </a>
+      <a href="#" class="work-card">
+        <div class="wc-icon">🎬</div>
+        <div class="wc-title">Demo & Feature Videos</div>
+        <div class="wc-desc">35+ customer-facing videos and 10+ PM-requested demos produced with Camtasia and Synthesia.</div>
+        <div class="wc-link">Watch videos ↗</div>
+      </a>
+      <a href="#" class="work-card">
+        <div class="wc-icon">⚙️</div>
+        <div class="wc-title">Automation Scripts</div>
+        <div class="wc-desc">Python & Google Apps Script tools for broken-link detection, article aging, Jira reporting, and more.</div>
+        <div class="wc-link">View scripts ↗</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- IMPACT -->
+<section>
+  <div class="wrap">
+    <div class="s-head fi">
+      <div class="label">Impact</div>
+      <h2 class="s-title">By the numbers</h2>
+    </div>
+    <div class="impact-grid fi">
+      <div class="impact-card"><div class="im-n">20+</div><div class="im-l">Release notes authored across quarterly cycles</div></div>
+      <div class="impact-card"><div class="im-n">38+</div><div class="im-l">Use-case community posts published</div></div>
+      <div class="impact-card"><div class="im-n">35+</div><div class="im-l">Customer-facing videos produced</div></div>
+      <div class="impact-card"><div class="im-n">570+</div><div class="im-l">Support articles peer-reviewed (EN + DE)</div></div>
+      <div class="impact-card"><div class="im-n">8+</div><div class="im-l">Automation scripts deployed</div></div>
+      <div class="impact-card"><div class="im-n">&lt;4d</div><div class="im-l">Average WSC ticket turnaround maintained</div></div>
+      <div class="impact-card"><div class="im-n">7+</div><div class="im-l">Product pods owned simultaneously</div></div>
+      <div class="impact-card"><div class="im-n">95%</div><div class="im-l">Whatfix product knowledge quiz score</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- RECOGNITION -->
+<section id="recognition" class="on-white">
+  <div class="wrap">
+    <div class="s-head fi">
+      <div class="label">Recognition</div>
+      <h2 class="s-title">Awards & appreciation</h2>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card fi"><div class="rec-icon">🏅</div><h4>Above & Beyond Badge</h4><p>Exceptional dependability — delivered without compromising quality even under personal pressure and competing priorities.</p></div>
+      <div class="rec-card fi" style="transition-delay:.05s"><div class="rec-icon">⚡</div><h4>Hustler Badge</h4><p>Proactive self-improvement, consistent planning, and continuously elevating the quality of every output.</p></div>
+      <div class="rec-card fi" style="transition-delay:.1s"><div class="rec-icon">🎥</div><h4>PM Appreciation – Seek GTM</h4><p>Created Seek for Salesforce demo videos under tight timelines; shared on LinkedIn by company leadership.</p></div>
+      <div class="rec-card fi" style="transition-delay:.03s"><div class="rec-icon">⭐</div><h4>Spot Award – Emergency Pop-up</h4><p>Stayed late on a Friday to deploy an emergency downtime pop-up, identifying a new display solution in the process.</p></div>
+      <div class="rec-card fi" style="transition-delay:.08s"><div class="rec-icon">⭐</div><h4>Spot Award – Use Case Showcase</h4><p>Presented creative Whatfix use cases at the Monday use-case call, inspiring teammates to adopt features.</p></div>
+      <div class="rec-card fi" style="transition-delay:.13s"><div class="rec-icon">💡</div><h4>Cheers Mate – Video Hack</h4><p>Synthesia + Loom audio-sync workflow that eliminated minute limits, reduced rework, and cut production costs.</p></div>
+      <div class="rec-card fi" style="transition-delay:.06s"><div class="rec-icon">🔍</div><h4>Slack Recognition – Smart Tip</h4><p>Proposed a product-level Smart Tip to fix a Studio UX friction point — recognised for thinking beyond documentation.</p></div>
+      <div class="rec-card fi" style="transition-delay:.11s"><div class="rec-icon">🎤</div><h4>External Presentation</h4><p>"Writer-Led Innovation for Tool Limitations" — appreciated by senior technical writers at industry-wide event.</p></div>
+      <div class="rec-card fi" style="transition-delay:.16s"><div class="rec-icon">🚀</div><h4>DAP Summit Appreciation</h4><p>Multiple feature videos delivered in record time for DAP Summit — last-minute, high-priority request.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep"/>
+
+<!-- CONTACT -->
+<section id="contact" class="on-white">
+  <div class="wrap">
+    <div class="contact-inner fi">
+      <div class="label" style="text-align:center">Contact</div>
+      <h2 class="s-title" style="text-align:center;margin-bottom:.9rem">Let's connect</h2>
+      <p>Open to opportunities at SaaS companies and product-led startups where documentation and digital adoption are strategic priorities.</p>
+      <div class="contact-btns">
+        <a href="mailto:sarangisure*****@gmail.com" class="btn btn-p">✉ Email Me</a>
+        <a href="https://www.linkedin.com/in/sarangisurendran4" class="btn btn-o" target="_blank">LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Sarangi Surendran · Information Developer II · Bangalore, India · 2025</footer>
+
+<script>
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('v'); io.unobserve(e.target); }});
+}, { threshold:.07, rootMargin:'0px 0px -28px 0px' });
+document.querySelectorAll('.fi').forEach(el => io.observe(el));
+
+const secs = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-links a');
+let t = false;
+window.addEventListener('scroll', () => {
+  if(t) return; t = true;
+  requestAnimationFrame(() => {
+    let cur = '';
+    secs.forEach(s => { if(scrollY >= s.offsetTop - 70) cur = s.id; });
+    links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur));
+    t = false;
+  });
+}, {passive:true});
+</script>
+</body>
+</html>
